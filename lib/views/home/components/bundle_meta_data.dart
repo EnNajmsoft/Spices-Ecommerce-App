@@ -1,9 +1,12 @@
+import 'package:Spices_Ecommerce_app/data/model/Product.dart';
 import 'package:flutter/material.dart';
-
 class BundleMetaData extends StatelessWidget {
   const BundleMetaData({
     super.key,
+    required this.product, // تمرير المنتج كمعامل
   });
+
+  final Product product;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +19,10 @@ class BundleMetaData extends StatelessWidget {
           Column(
             children: [
               Text(
-                '25 Kg',
+                // '${product.weight!} Kg', // وزن المنتج
+          " حجم المنتج",
+
+
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -29,12 +35,13 @@ class BundleMetaData extends StatelessWidget {
             ],
           ),
 
-          /* <----  Size -----> */
+          /* <---- Size -----> */
           Column(
             children: [
               Text(
-                'Medium',
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                // product.size!, // حجم المنتج
+" حجم المنتج",
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
@@ -50,7 +57,7 @@ class BundleMetaData extends StatelessWidget {
           Column(
             children: [
               Text(
-                '17',
+                '${product.quantity}', // عدد العناصر
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,

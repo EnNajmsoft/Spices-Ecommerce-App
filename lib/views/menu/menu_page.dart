@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-
-import '../../core/constants/constants.dart';
-import '../../core/routes/app_routes.dart';
-import 'components/category_tile.dart';
+import 'package:get/get.dart';
+import 'package:Spices_Ecommerce_app/controller/CategoryController.dart'; // تأكد من المسار الصحيح
+import 'package:Spices_Ecommerce_app/core/class/statusrequest.dart';
+import 'package:Spices_Ecommerce_app/core/routes/app_routes.dart';
 
 class MenuPage extends StatelessWidget {
-  const MenuPage({super.key});
+  final CategoryController categoryController = Get.put(CategoryController());
+
+  MenuPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
         children: [
-          const SizedBox(height: 32),
+          const SizedBox(height: 16), // تقليل المسافة
           Text(
             'Choose a category',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -20,109 +22,113 @@ class MenuPage extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
           ),
-          const SizedBox(height: 16),
-          const CateogoriesGrid()
+          const SizedBox(height: 8), // تقليل المسافة
+          const Expanded(child: CategoriesGrid()),
         ],
       ),
     );
   }
 }
 
-class CateogoriesGrid extends StatelessWidget {
-  const CateogoriesGrid({
-    super.key,
-  });
+class CategoriesGrid extends StatelessWidget {
+  const CategoriesGrid({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: GridView.count(
-        crossAxisCount: 3,
+    final CategoryController categoryController =
+        Get.find<CategoryController>();
+
+    return Obx(() {
+      if (categoryController.isLoading.value) {
+        return const Center(child: CircularProgressIndicator());
+      } else if (categoryController.statusRequest == StatusRequest.failure) {
+        return const Center(child: Text('Failed to load categories'));
+      } else if (categoryController.statusRequest ==
+          StatusRequest.serverfailure) {
+        return const Center(child: Text('Server error'));
+      } else if (categoryController.categoryList.isEmpty) {
+        return const Center(child: Text('No categories found'));
+      } else {
+        return GridView.builder(
+          padding: const EdgeInsets.all(2), // تقليل الـ padding
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 4, // عدد الأعمدة
+            mainAxisSpacing: 4, // تقليل المسافة الرأسية بين العناصر
+            crossAxisSpacing: 4, // تقليل المسافة الأفقية بين العناصر
+            childAspectRatio: 0.8, // نسبة العرض إلى الارتفاع
+          ),
+          itemCount: categoryController.categoryList.length,
+          itemBuilder: (context, index) {
+            final category = categoryController.categoryList[index];
+            return CategoryTile(
+              imageLink: category.image ??
+                  'https://via.placeholder.com/150', // صورة الفئة
+              label: category.name ?? 'No Name', // اسم الفئة
+              onTap: () {
+                // الانتقال إلى صفحة تفاصيل الفئة
+                Get.toNamed(AppRoutes.categoryDetails, arguments: category);
+              },
+            );
+          },
+        );
+      }
+    });
+  }
+}
+
+class CategoryTile extends StatelessWidget {
+  final String imageLink;
+  final String label;
+  final VoidCallback onTap;
+
+  const CategoryTile({
+    Key? key,
+    required this.imageLink,
+    required this.label,
+    required this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/tGChxbZ.png',
-            label: 'Vegetables',
-            backgroundColor: AppColors.primary,
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
+          // صورة الفئة
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8), // زوايا منحنية
+            child: Image.network(
+              imageLink,
+              height: 60, // تقليل ارتفاع الصورة
+              width: 60, // تقليل عرض الصورة
+              fit: BoxFit.cover, // تغطية المساحة المحددة
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  height: 60,
+                  width: 60,
+                  color: Colors.grey[300],
+                  child: const Icon(
+                    Icons.image_not_supported,
+                    size: 30,
+                    color: Colors.grey,
+                  ), // أيقونة بديلة في حالة الخطأ
+                );
+              },
+            ),
           ),
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/yOFxoIP.png',
-            label: 'Meat And Fish',
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
-          ),
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/GPsRaFC.png',
-            label: 'Medicine',
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
-          ),
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/mGRqfnc.png',
-            label: 'Baby Care',
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
-          ),
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/fwyz4oC.png',
-            label: 'Office Supplies',
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
-          ),
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/DNr8a6R.png',
-            label: 'Beauty',
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
-          ),
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/O2ZX5nR.png',
-            label: 'Gym Equipment',
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
-          ),
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/wJBopjL.png',
-            label: 'Gardening Tools',
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
-          ),
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/P4yJA9t.png',
-            label: 'Pet Care',
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
-          ),
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/sxGf76e.png',
-            label: 'Eye Wears',
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
-          ),
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/BPvKeXl.png',
-            label: 'Pack',
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
-          ),
-          CategoryTile(
-            imageLink: 'https://i.imgur.com/m65fusg.png',
-            label: 'Others',
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.categoryDetails);
-            },
+          const SizedBox(height: 4), // تقليل المسافة بين الصورة والنص
+          // نص الفئة
+          Text(
+            label,
+            style: const TextStyle(
+              color: Colors.black, // لون النص
+              fontWeight: FontWeight.bold,
+              fontSize: 12, // تصغير حجم الخط
+            ),
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),

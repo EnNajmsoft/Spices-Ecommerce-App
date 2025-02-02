@@ -5,10 +5,18 @@ class ItemRow extends StatelessWidget {
     super.key,
     required this.title,
     required this.value,
+    this.titleColor = const Color.fromARGB(255, 255, 37, 37),
+    this.valueColor = Colors.black,
+    this.titleFontWeight = FontWeight.normal,
+    this.valueFontWeight = FontWeight.bold,
   });
 
   final String title;
   final String value;
+  final Color titleColor;
+  final Color valueColor;
+  final FontWeight titleFontWeight;
+  final FontWeight valueFontWeight;
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +27,16 @@ class ItemRow extends StatelessWidget {
           Text(
             title,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: const Color.fromARGB(255, 255, 37, 37),
+                  color: titleColor,
+                  fontWeight: titleFontWeight,
                 ),
           ),
           const Spacer(),
           Text(
             value,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
+                  color: valueColor,
+                  fontWeight: valueFontWeight,
                 ),
           ),
         ],

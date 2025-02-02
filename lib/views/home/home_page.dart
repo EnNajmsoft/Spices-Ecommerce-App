@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../core/constants/app_icons.dart';
+
 import '../../core/constants/app_defaults.dart';
 import '../../core/routes/app_routes.dart';
 import 'components/ad_space.dart';
@@ -31,9 +32,6 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               floating: true,
-              snap: true, // يظهر تلقائيًا عند التمرير لأعلى
-              pinned: true, // يبقى ثابتًا عند التمرير
-              elevation: 4.0, // إضافة ظل
               title: SvgPicture.asset(
                 "assets/images/app_logo.svg",
                 height: 32,
@@ -57,14 +55,11 @@ class HomePage extends StatelessWidget {
             const SliverToBoxAdapter(
               child: AdSpace(),
             ),
-            const SliverPadding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              sliver: SliverToBoxAdapter(
-                child: PopularPacks(),
-              ),
+            SliverToBoxAdapter(
+              child: PopularPacks(),
             ),
-            const SliverPadding(
-              padding: EdgeInsets.symmetric(vertical: AppDefaults.padding),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(vertical: AppDefaults.padding),
               sliver: SliverToBoxAdapter(
                 child: OurNewItem(),
               ),

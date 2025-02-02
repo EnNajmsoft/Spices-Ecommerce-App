@@ -10,7 +10,7 @@ class SignUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return  Scaffold(
       backgroundColor: AppColors.scaffoldWithBoxBackground,
       body: SafeArea(
         child: Center(

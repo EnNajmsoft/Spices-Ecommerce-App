@@ -33,9 +33,9 @@ class _EntryPointUIState extends State<EntryPointUI> {
   /// All the pages
   List<Widget> pages = [
     const HomePage(),
-    const MenuPage(),
+     MenuPage(),
     const CartPage(isHomePage: true),
-    const SavePage(isHomePage: false),
+     SavePage(isHomePage: false),
     const ProfilePage(),
   ];
 

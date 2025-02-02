@@ -30,13 +30,13 @@ class ProductDetailsPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const ProductImagesSlider(
-              images: [
-                'https://i.imgur.com/3o6ons9.png',
-                'https://i.imgur.com/3o6ons9.png',
-                'https://i.imgur.com/3o6ons9.png',
-              ],
-            ),
+            //  ProductImagesSlider(
+            //   images: [
+            //     'https://i.imgur.com/3o6ons9.png',
+            //     'https://i.imgur.com/3o6ons9.png',
+            //     'https://i.imgur.com/3o6ons9.png',
+            //   ], product: null,
+            // ),
             SizedBox(
               width: double.infinity,
               child: Padding(
@@ -61,7 +61,7 @@ class ProductDetailsPage extends StatelessWidget {
               child: PriceAndQuantityRow(
                 currentPrice: 20,
                 orginalPrice: 30,
-                quantity: 2,
+                // quantity: 2,
               ),
             ),
             const SizedBox(height: 8),

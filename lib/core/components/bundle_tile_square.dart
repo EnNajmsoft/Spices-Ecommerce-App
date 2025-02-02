@@ -1,9 +1,13 @@
+import 'package:Spices_Ecommerce_app/data/model/Product.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../constants/constants.dart';
 import '../models/dummy_bundle_model.dart';
 import '../routes/app_routes.dart';
 import 'network_image.dart';
+import 'package:flutter/material.dart';
+import 'network_image.dart'; // تأكد من استيراد المكون
 
 class BundleTileSquare extends StatelessWidget {
   const BundleTileSquare({
@@ -11,7 +15,7 @@ class BundleTileSquare extends StatelessWidget {
     required this.data,
   });
 
-  final BundleModel data;
+  final Product data;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +24,11 @@ class BundleTileSquare extends StatelessWidget {
       borderRadius: AppDefaults.borderRadius,
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(context, AppRoutes.bundleProduct);
+           // تمرير المنتج إلى صفحة تفاصيل المنتج
+          Get.toNamed(
+            AppRoutes.bundleProduct,
+            arguments: data, // تمرير المنتج كمعامل
+          );
         },
         borderRadius: AppDefaults.borderRadius,
         child: Container(
@@ -39,7 +47,7 @@ class BundleTileSquare extends StatelessWidget {
                 child: AspectRatio(
                   aspectRatio: 1 / 1,
                   child: NetworkImageWithLoader(
-                    data.cover,
+                    data.imageUrl!,
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -49,7 +57,7 @@ class BundleTileSquare extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    data.name,
+                    data.name!,
                     style: Theme.of(context)
                         .textTheme
                         .titleLarge
@@ -58,7 +66,7 @@ class BundleTileSquare extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    data.itemNames.join(','),
+                    data.summary!, // يمكنك تعديل هذا بناءً على البيانات الفعلية
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -68,7 +76,7 @@ class BundleTileSquare extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    '\$${data.price.toInt()}',
+                    '\$${data.price!.toInt()}',
                     style: Theme.of(context)
                         .textTheme
                         .titleLarge
@@ -76,7 +84,7 @@ class BundleTileSquare extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    '\$${data.mainPrice}',
+                    '\$${data.salePrice}',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           decoration: TextDecoration.lineThrough,
                         ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../core/components/network_image.dart';
 import '../../../core/constants/constants.dart';
 
@@ -10,29 +9,61 @@ class LoginPageHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textGradient = LinearGradient(
+      colors: [
+         Color.fromARGB(255, 15, 77, 24), // اللون الأساسي
+        Color.fromARGB(255, 3, 50, 14), // أخضر غامق
+      ],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    );
+
     return Column(
       children: [
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.3,
-          child: const AspectRatio(
+        // الشعار
+         SizedBox(
+          width:
+              MediaQuery.of(context).size.width * 1,
+          child: AspectRatio(
             aspectRatio: 1 / 1,
-            child: NetworkImageWithLoader(AppImages.roundedLogo),
+            child: Image.asset(AppImages.roundedLogo,
+                fit: BoxFit.fitWidth), 
           ),
         ),
-        Text(
-          'Welcome to our',
-          style: Theme.of(context)
-              .textTheme
-              .titleLarge
-              ?.copyWith(fontWeight: FontWeight.bold),
+        const SizedBox(height: 16), 
+
+        
+        ShaderMask(
+          shaderCallback: (bounds) {
+            return textGradient.createShader(bounds);
+          },
+          child: Text(
+            'مرحبا بكم في',
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24, 
+                  color:
+                      Colors.white, 
+                ),
+          ),
         ),
-        Text(
-          'E-Grocery',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: AppColors.primary,
-              ),
-        )
+        const SizedBox(height: 8),
+
+        // // النص الثاني
+        // ShaderMask(
+        //   shaderCallback: (bounds) {
+        //     return textGradient.createShader(bounds);
+        //   },
+        //   child: Text(
+        //     'بهارات الياسيني',
+        //     style: Theme.of(context).textTheme.titleLarge?.copyWith(
+        //           fontWeight: FontWeight.bold,
+        //           fontSize: 28, 
+        //           color:
+        //               Colors.white, 
+        //         ),
+        //   ),
+        // ),
       ],
     );
   }

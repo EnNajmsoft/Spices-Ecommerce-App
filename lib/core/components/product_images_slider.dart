@@ -1,5 +1,7 @@
+import 'package:Spices_Ecommerce_app/controller/FavoriteController.dart';
+import 'package:Spices_Ecommerce_app/data/model/Product.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 import '../../views/home/components/animated_dots.dart';
 import '../constants/constants.dart';
@@ -9,9 +11,11 @@ class ProductImagesSlider extends StatefulWidget {
   const ProductImagesSlider({
     super.key,
     required this.images,
+    required this.product,
   });
 
   final List<String> images;
+  final Product product;
 
   @override
   State<ProductImagesSlider> createState() => _ProductImagesSliderState();
@@ -20,7 +24,7 @@ class ProductImagesSlider extends StatefulWidget {
 class _ProductImagesSliderState extends State<ProductImagesSlider> {
   late PageController controller;
   int currentIndex = 0;
-
+  final FavoriteController favoriteController = Get.find();
   List<String> images = [];
 
   @override
@@ -41,10 +45,17 @@ class _ProductImagesSliderState extends State<ProductImagesSlider> {
     return Container(
       margin: const EdgeInsets.all(AppDefaults.padding),
       decoration: BoxDecoration(
-        color: AppColors.coloredBackground,
+        color: const Color.fromARGB(255, 255, 255, 255),
         borderRadius: AppDefaults.borderRadius,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
-      height: MediaQuery.of(context).size.height * 0.35,
+      height: MediaQuery.of(context).size.height * 0.55,
       child: Stack(
         children: [
           Column(
@@ -63,7 +74,7 @@ class _ProductImagesSliderState extends State<ProductImagesSlider> {
                         aspectRatio: 1 / 1,
                         child: NetworkImageWithLoader(
                           images[index],
-                          fit: BoxFit.contain,
+                          fit: BoxFit.fill,
                         ),
                       ),
                     );
@@ -77,7 +88,7 @@ class _ProductImagesSliderState extends State<ProductImagesSlider> {
                   totalItems: images.length,
                   currentIndex: currentIndex,
                 ),
-              )
+              ),
             ],
           ),
           Positioned(
@@ -85,21 +96,53 @@ class _ProductImagesSliderState extends State<ProductImagesSlider> {
             child: Material(
               color: Colors.transparent,
               borderRadius: AppDefaults.borderRadius,
-              child: IconButton(
-                onPressed: () {},
-                iconSize: 56,
-                constraints: const BoxConstraints(minHeight: 56, minWidth: 56),
-                icon: Container(
+              child: InkWell(
+                borderRadius: BorderRadius.circular(30),
+                onTap: () {
+                  // التحقق مما إذا كان المنتج في المفضلة
+                  if (favoriteController
+                      .isProductInFavorites(widget.product.id!)) {
+                    // إذا كان المنتج في المفضلة، قم بإزالته
+                    favoriteController.removeFavorite(widget.product.id!);
+                  } else {
+                    // إذا لم يكن المنتج في المفضلة، قم بإضافته
+                    favoriteController.addFavorite(widget.product.id!);
+                  }
+                  setState(() {}); // تحديث الواجهة
+                },
+                child: Container(
                   padding: const EdgeInsets.all(AppDefaults.padding),
-                  decoration: const BoxDecoration(
-                    color: AppColors.scaffoldBackground,
+                  decoration: BoxDecoration(
+                    color: AppColors.scaffoldBackground.withOpacity(0.9),
                     shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
-                  child: SvgPicture.asset(AppIcons.heart),
+                  child: Obx(() {
+                    return AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      child: Icon(
+                        Icons.favorite,
+                        key: ValueKey<bool>(favoriteController
+                            .isProductInFavorites(widget.product.id!)),
+                        color: favoriteController
+                                .isProductInFavorites(widget.product.id!)
+                            ? const Color.fromARGB(
+                                255, 255, 127, 118) // لون القلب
+                            : const Color.fromARGB(117, 23, 6, 6), // حواف شفافة
+                        size: 28, // حجم الأيقونة
+                      ),
+                    );
+                  }),
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

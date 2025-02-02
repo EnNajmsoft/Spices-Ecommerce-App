@@ -73,19 +73,19 @@ class RouteGenerator {
         return CupertinoPageRoute(builder: (_) => const CartPage());
 
       case AppRoutes.savePage:
-        return CupertinoPageRoute(builder: (_) => const SavePage());
+        return CupertinoPageRoute(builder: (_) =>  SavePage());
 
       case AppRoutes.checkoutPage:
         return CupertinoPageRoute(builder: (_) => const CheckoutPage());
 
       case AppRoutes.categoryDetails:
-        return CupertinoPageRoute(builder: (_) => const CategoryProductPage());
+        return CupertinoPageRoute(builder: (_) =>  CategoryProductPage());
 
       case AppRoutes.login:
-        return CupertinoPageRoute(builder: (_) => const LoginPage());
+        return CupertinoPageRoute(builder: (_) =>  LoginPage());
 
-      case AppRoutes.signup:
-        return CupertinoPageRoute(builder: (_) => const SignUpPage());
+      // case AppRoutes.signup:
+      //   return CupertinoPageRoute(builder: (_) => const SignUpPage());
 
       case AppRoutes.loginOrSignup:
         return CupertinoPageRoute(builder: (_) => const LoginOrSignUpPage());
@@ -108,7 +108,7 @@ class RouteGenerator {
 
       case AppRoutes.bundleProduct:
         return CupertinoPageRoute(
-            builder: (_) => const BundleProductDetailsPage());
+            builder: (_) =>  BundleProductDetailsPage());
 
       case AppRoutes.bundleDetailsPage:
         return CupertinoPageRoute(builder: (_) => const BundleDetailsPage());

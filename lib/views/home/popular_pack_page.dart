@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../core/components/app_back_button.dart';
-import '../../core/components/bundle_tile_square.dart';
 import '../../core/constants/constants.dart';
 import '../../core/routes/app_routes.dart';
+import 'components/popular_packs.dart'; // تأكد من استيراد المكون
 
 class PopularPackPage extends StatelessWidget {
   const PopularPackPage({super.key});
@@ -22,21 +22,7 @@ class PopularPackPage extends StatelessWidget {
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: AppDefaults.padding),
-              child: GridView.builder(
-                padding: const EdgeInsets.only(top: AppDefaults.padding),
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200,
-                  childAspectRatio: 0.73,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                ),
-                itemCount: 8,
-                itemBuilder: (context, index) {
-                  return BundleTileSquare(
-                    data: Dummy.bundles.first,
-                  );
-                },
-              ),
+              child: PopularPacks(), // استخدام مكون PopularPacks
             ),
             Positioned(
               bottom: 0,
