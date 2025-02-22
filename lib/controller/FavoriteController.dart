@@ -63,8 +63,9 @@ Future<void> addFavorite(int productId) async {
         Uri.parse(AppLink.addFavorite),
         headers: {
           'Accept': 'application/json',
-          'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+
         },
         body: json.encode({
           'product_id': productId,
