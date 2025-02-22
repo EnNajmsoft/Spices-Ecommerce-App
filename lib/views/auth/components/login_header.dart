@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-import '../../../core/components/network_image.dart';
 import '../../../core/constants/constants.dart';
 
 class LoginPageHeader extends StatelessWidget {
-  const LoginPageHeader({
-    super.key,
-  });
+  const LoginPageHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final textGradient = LinearGradient(
+    const textGradient = LinearGradient(
       colors: [
-         Color.fromARGB(255, 15, 77, 24), // اللون الأساسي
-        Color.fromARGB(255, 3, 50, 14), // أخضر غامق
+        Color.fromARGB(255, 15, 77, 24),
+        Color.fromARGB(255, 3, 50, 14),
       ],
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
@@ -20,50 +17,44 @@ class LoginPageHeader extends StatelessWidget {
 
     return Column(
       children: [
-        // الشعار
-         SizedBox(
-          width:
-              MediaQuery.of(context).size.width * 1,
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.5, 
           child: AspectRatio(
             aspectRatio: 1 / 1,
-            child: Image.asset(AppImages.roundedLogo,
-                fit: BoxFit.fitWidth), 
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius:
+                    BorderRadius.circular(100), 
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3), 
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                child: Image.asset(AppImages.roundedLogo, fit: BoxFit.cover),
+              ),
+            ),
           ),
         ),
-        const SizedBox(height: 16), 
-
-        
+        const SizedBox(height: 24),
         ShaderMask(
           shaderCallback: (bounds) {
             return textGradient.createShader(bounds);
           },
           child: Text(
-            'مرحبا بكم في',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            'مرحباً بكم في',
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
-                  fontSize: 24, 
-                  color:
-                      Colors.white, 
+                  color: Colors.white,
                 ),
           ),
         ),
         const SizedBox(height: 8),
-
-        // // النص الثاني
-        // ShaderMask(
-        //   shaderCallback: (bounds) {
-        //     return textGradient.createShader(bounds);
-        //   },
-        //   child: Text(
-        //     'بهارات الياسيني',
-        //     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-        //           fontWeight: FontWeight.bold,
-        //           fontSize: 28, 
-        //           color:
-        //               Colors.white, 
-        //         ),
-        //   ),
-        // ),
       ],
     );
   }

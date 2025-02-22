@@ -38,12 +38,12 @@ class LoginPageForm extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Phone Field
-                Text(
+                const Text(
                   "جوالك",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: const Color.fromARGB(219, 5, 91, 15),
+                    color: Color.fromARGB(219, 5, 91, 15),
                   ),
                 ),
                 const SizedBox(height: 8),
