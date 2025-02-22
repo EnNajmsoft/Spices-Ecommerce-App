@@ -1,4 +1,5 @@
-
+import 'package:Spices_Ecommerce_app/data/model/Product.dart';
+import 'package:Spices_Ecommerce_app/views/auth/VerifyOtpPage.dart';
 import 'package:Spices_Ecommerce_app/views/auth/login_or_signup_page.dart';
 import 'package:Spices_Ecommerce_app/views/auth/login_page.dart';
 import 'package:Spices_Ecommerce_app/views/auth/number_verification_page.dart';
@@ -13,9 +14,10 @@ import 'package:Spices_Ecommerce_app/views/drawer/faq_page.dart';
 import 'package:Spices_Ecommerce_app/views/drawer/help_page.dart';
 import 'package:Spices_Ecommerce_app/views/drawer/terms_and_conditions_page.dart';
 import 'package:Spices_Ecommerce_app/views/entrypoint/entrypoint_ui.dart';
+import 'package:Spices_Ecommerce_app/views/home/ProductDetailsPage.dart';
 import 'package:Spices_Ecommerce_app/views/home/bundle_details_page.dart';
 import 'package:Spices_Ecommerce_app/views/home/bundle_product_details_page.dart';
-import 'package:Spices_Ecommerce_app/views/home/home_page.dart';
+import 'package:Spices_Ecommerce_app/views/home/home_screen.dart';
 import 'package:Spices_Ecommerce_app/views/home/new_item_page.dart';
 import 'package:Spices_Ecommerce_app/views/home/order_failed_page.dart';
 import 'package:Spices_Ecommerce_app/views/home/order_successfull_page.dart';
@@ -37,7 +39,6 @@ import 'package:Spices_Ecommerce_app/views/review/review_page.dart';
 import 'package:Spices_Ecommerce_app/views/review/submit_review_page.dart';
 import 'package:get/get.dart';
 
-
 class AppRoutes {
   /// The Initial Page
   static const introLogin = '/intro_login';
@@ -50,7 +51,7 @@ class AppRoutes {
   static const numberVerification = '/numberVerification';
   static const forgotPassword = '/forgotPassword';
   static const passwordReset = '/passwordReset';
-
+  static const String verifyOtp = '/verifyotp';
   /* <---- ENTRYPOINT -----> */
   static const entryPoint = '/entry_point';
 
@@ -113,32 +114,37 @@ class AppRoutes {
   static const paymentCardAdd = '/paymentCardAdd';
 
   static final List<GetPage> routes = [
-    
-     GetPage(
+    GetPage(
       name: entryPoint,
       page: () => const EntryPointUI(),
     ),
-
     GetPage(
       name: home,
-      page: () => const HomePage(),
+      page: () => HomeScreen(),
     ),
+
+    // GetPage(
+    //   name: home,
+    //   page: () => const HomePage(),
+    // ),
 
     GetPage(
       name: login,
-      page: () => LoginPage(),
+      page: () => const LoginPage(),
     ),
+      GetPage(name: verifyOtp, page: () => VerifyOtpPage()),
+
     GetPage(
       name: signup,
-      page: () => SignUpPage(),
+      page: () => const SignUpPage(),
     ),
     GetPage(
       name: loginOrSignup,
-      page: () => LoginOrSignUpPage(),
+      page: () => const LoginOrSignUpPage(),
     ),
     GetPage(
       name: numberVerification,
-      page: () => NumberVerificationPage(),
+      page: () => const NumberVerificationPage(),
     ),
     // GetPage(
     //   name: forgotPassword,
@@ -146,13 +152,13 @@ class AppRoutes {
     // ),
     GetPage(
       name: passwordReset,
-      page: () => PasswordResetPage(),
+      page: () => const PasswordResetPage(),
     ),
 
     // صفحات المنتجات
     GetPage(
       name: newItems,
-      page: () => NewItemsPage(),
+      page: () => const NewItemsPage(),
     ),
     // GetPage(
     //   name: popularItems,
@@ -160,7 +166,7 @@ class AppRoutes {
     // ),
     GetPage(
       name: bundleProduct,
-      page: () => BundleProductDetailsPage(),
+      page: () => const BundleProductDetailsPage(),
     ),
     // GetPage(
     //   name: createMyPack,
@@ -168,11 +174,14 @@ class AppRoutes {
     // ),
     GetPage(
       name: bundleDetailsPage,
-      page: () => BundleDetailsPage(),
+      page: () => const BundleDetailsPage(),
     ),
-    GetPage(
+GetPage(
       name: productDetails,
-      page: () => ProductDetailsPage(),
+      page: () {
+        final product = Get.arguments['product'] as Product;
+        return ProductDetailsPage(product: product);
+      },
     ),
     GetPage(
       name: cartPage,
@@ -184,17 +193,17 @@ class AppRoutes {
     // ),
     GetPage(
       name: checkoutPage,
-      page: () => CheckoutPage(),
+      page: () => const CheckoutPage(),
     ),
 
     // صفحات حالة الطلب
     GetPage(
       name: orderSuccessfull,
-      page: () => OrderSuccessfullPage(),
+      page: () => const OrderSuccessfullPage(),
     ),
     GetPage(
       name: orderFailed,
-      page: () => OrderFailedPage(),
+      page: () => const OrderFailedPage(),
     ),
     // GetPage(
     //   name: noOrderYet,
@@ -214,17 +223,17 @@ class AppRoutes {
     // صفحات البحث
     GetPage(
       name: search,
-      page: () => SearchPage(),
+      page: () => const SearchPage(),
     ),
     GetPage(
       name: searchResult,
-      page: () => SearchResultPage(),
+      page: () => const SearchResultPage(),
     ),
 
     // صفحات الملف الشخصي والإعدادات
     GetPage(
       name: profile,
-      page: () => ProfilePage(),
+      page: () => const ProfilePage(),
     ),
     // GetPage(
     //   name: myOrder,
@@ -232,7 +241,7 @@ class AppRoutes {
     // ),
     GetPage(
       name: orderDetails,
-      page: () => OrderDetailsPage(),
+      page: () => const OrderDetailsPage(),
     ),
     // GetPage(
     //   name: coupon,
@@ -240,7 +249,7 @@ class AppRoutes {
     // ),
     GetPage(
       name: couponDetails,
-      page: () => CouponDetailsPage(),
+      page: () => const CouponDetailsPage(),
     ),
     // GetPage(
     //   name: deliveryAddress,
@@ -248,7 +257,7 @@ class AppRoutes {
     // ),
     GetPage(
       name: newAddress,
-      page: () => NewAddressPage(),
+      page: () => const NewAddressPage(),
     ),
     // GetPage(
     //   name: orderTracking,
@@ -256,15 +265,15 @@ class AppRoutes {
     // ),
     GetPage(
       name: profileEdit,
-      page: () => ProfileEditPage(),
+      page: () => const ProfileEditPage(),
     ),
     GetPage(
       name: notifications,
-      page: () => NotificationSettingsPage(),
+      page: () => const NotificationSettingsPage(),
     ),
     GetPage(
       name: settings,
-      page: () => SettingsPage(),
+      page: () => const SettingsPage(),
     ),
     // GetPage(
     //   name: settingsLanguage,
@@ -276,53 +285,53 @@ class AppRoutes {
     // ),
     GetPage(
       name: changePassword,
-      page: () => ChangePasswordPage(),
+      page: () => const ChangePasswordPage(),
     ),
     GetPage(
       name: changePhoneNumber,
-      page: () => ChangePhoneNumberPage(),
+      page: () => const ChangePhoneNumberPage(),
     ),
 
     // صفحات المراجعة والتعليقات
     GetPage(
       name: review,
-      page: () => ReviewPage(),
+      page: () => const ReviewPage(),
     ),
     GetPage(
       name: submitReview,
-      page: () => SubmitReviewPage(),
+      page: () => const SubmitReviewPage(),
     ),
 
     // صفحات القائمة الجانبية
     GetPage(
       name: drawerPage,
-      page: () => DrawerPage(),
+      page: () => const DrawerPage(),
     ),
     GetPage(
       name: aboutUs,
-      page: () => AboutUsPage(),
+      page: () => const AboutUsPage(),
     ),
     GetPage(
       name: faq,
-      page: () => FAQPage(),
+      page: () => const FAQPage(),
     ),
     GetPage(
       name: termsAndConditions,
-      page: () => TermsAndConditionsPage(),
+      page: () => const TermsAndConditionsPage(),
     ),
     GetPage(
       name: help,
-      page: () => HelpPage(),
+      page: () => const HelpPage(),
     ),
     GetPage(
       name: contactUs,
-      page: () => ContactUsPage(),
+      page: () => const ContactUsPage(),
     ),
 
     // صفحات طريقة الدفع
     GetPage(
       name: paymentMethod,
-      page: () => PaymentMethodPage(),
+      page: () => const PaymentMethodPage(),
     ),
     // GetPage(
     //   name: paymentCardAdd,

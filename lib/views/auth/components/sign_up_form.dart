@@ -2,7 +2,6 @@ import 'package:Spices_Ecommerce_app/controller/auth/RegisterController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../../core/constants/constants.dart';
 import '../../../core/utils/validators.dart';
@@ -12,7 +11,7 @@ import '../../../core/themes/app_themes.dart';
 
 class SignUpForm extends StatefulWidget {
   // جعلها StatefulWidget
-  SignUpForm({super.key});
+  const SignUpForm({super.key});
 
   @override
   _SignUpFormState createState() => _SignUpFormState();

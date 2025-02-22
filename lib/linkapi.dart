@@ -7,6 +7,7 @@ class AppLink {
   // static const String signUp = "https://spices-ecommerce.test/api/user/auth/register";
  
   static const String login  = "$server/user/auth/login";
+  static const String verifyOTP  = "$server/user/auth/verifyOtp";
 
 // ================================= ForgetPassword ========================== //
 
