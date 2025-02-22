@@ -7,8 +7,8 @@ import '../../core/components/product_images_slider.dart';
 import '../../core/components/review_row_button.dart';
 import '../../core/constants/app_defaults.dart';
 
-class ProductDetailsPage extends StatelessWidget {
-  const ProductDetailsPage({super.key});
+class ProductDetailsPage2 extends StatelessWidget {
+  const ProductDetailsPage2({super.key});
 
   @override
   Widget build(BuildContext context) {

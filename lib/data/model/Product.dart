@@ -5,7 +5,7 @@ class Product {
   final double? price;
   final double? salePrice;
   final int? subCategoryId;
-  final String? imageUrl;
+  final String? image;
   final String? summary;
   final String? description;
   final int? unitId;
@@ -24,7 +24,7 @@ class Product {
     this.price,
     this.salePrice,
     this.subCategoryId,
-    this.imageUrl,
+    this.image,
     this.summary,
     this.description,
     this.unitId,
@@ -45,7 +45,7 @@ class Product {
       price: (json['price'] as num?)?.toDouble(),
       salePrice: (json['sale_price'] as num?)?.toDouble(),
       subCategoryId: json['sub_category_id'] as int?,
-      imageUrl: json['image_url'] as String?,
+      image: json['image'] as String?,
       summary: json['summary'] as String?,
       description: json['description'] as String?,
       unitId: json['unit_id'] as int?,
@@ -71,7 +71,7 @@ class Product {
       'price': price,
       'sale_price': salePrice,
       'sub_category_id': subCategoryId,
-      'image_url': imageUrl,
+      'image': image,
       'summary': summary,
       'description': description,
       'unit_id': unitId,

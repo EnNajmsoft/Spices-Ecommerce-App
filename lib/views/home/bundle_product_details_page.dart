@@ -32,7 +32,7 @@ class BundleProductDetailsPage extends StatelessWidget {
 
     // التحقق من أن المنتج يحتوي على بيانات صحيحة
     if (product.name == null ||
-        product.imageUrl == null ||
+        product.image == null ||
         product.price == null ||
         product.salePrice == null) {
       return Scaffold(
@@ -59,8 +59,8 @@ class BundleProductDetailsPage extends StatelessWidget {
           children: [
             ProductImagesSlider(
               images: [
-                product.imageUrl!, // استخدام صورة المنتج
-                product.imageUrl!, // يمكنك إضافة صور إضافية هنا
+                product.image!, // استخدام صورة المنتج
+                product.image!, // يمكنك إضافة صور إضافية هنا
               ],
               product: product,
             ),

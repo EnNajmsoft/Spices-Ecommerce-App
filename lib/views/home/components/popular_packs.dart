@@ -31,6 +31,7 @@ class PopularPacks extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: controller.productList.map((product) {
+                    print('Product: ${product.name}, Image: ${product.image}');
                     return Padding(
                       padding:
                           const EdgeInsets.only(right: AppDefaults.padding),

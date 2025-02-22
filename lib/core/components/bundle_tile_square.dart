@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../constants/constants.dart';
-import '../models/dummy_bundle_model.dart';
 import '../routes/app_routes.dart';
 import 'network_image.dart';
-import 'package:flutter/material.dart';
-import 'network_image.dart'; // تأكد من استيراد المكون
 
 class BundleTileSquare extends StatelessWidget {
   const BundleTileSquare({
@@ -47,7 +44,7 @@ class BundleTileSquare extends StatelessWidget {
                 child: AspectRatio(
                   aspectRatio: 1 / 1,
                   child: NetworkImageWithLoader(
-                    data.imageUrl!,
+                    data.image!,
                     fit: BoxFit.contain,
                   ),
                 ),
