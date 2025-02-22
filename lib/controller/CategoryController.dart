@@ -1,18 +1,19 @@
 import 'package:Spices_Ecommerce_app/data/model/ProdCategory.dart';
-import 'package:Spices_Ecommerce_app/linkapi.dart'; // تأكد من استيراد AppLink
+import 'package:Spices_Ecommerce_app/linkapi.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:Spices_Ecommerce_app/core/class/statusrequest.dart'; // تأكد من استيراد StatusRequest
+import 'package:Spices_Ecommerce_app/core/class/statusrequest.dart';
 
 class CategoryController extends GetxController {
   var isLoading = true.obs;
-  var categoryList = <ProdCategory>[].obs; // تغيير النوع إلى List<Category>
+  var categoryList = <ProdCategory>[].obs;
+  var searchedCategories = <ProdCategory>[].obs;
   StatusRequest statusRequest = StatusRequest.none;
 
   @override
   void onInit() {
-    fetchCategories(); // تغيير اسم الدالة إلى fetchCategories
+    fetchCategories();
     super.onInit();
   }
 
@@ -23,7 +24,7 @@ class CategoryController extends GetxController {
       update();
 
       final response = await http.get(
-        Uri.parse(AppLink.categoriesFetch), // استخدام الرابط الصحيح
+        Uri.parse(AppLink.categoriesFetch),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
@@ -36,8 +37,7 @@ class CategoryController extends GetxController {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
-        final List<dynamic> categoriesJson =
-            data['categories']; // تحليل categories
+        final List<dynamic> categoriesJson = data['categories'];
         categoryList.assignAll(
             categoriesJson.map((json) => ProdCategory.fromJson(json)).toList());
         statusRequest = StatusRequest.success;
@@ -46,11 +46,22 @@ class CategoryController extends GetxController {
         throw Exception('Failed to load categories');
       }
     } catch (e) {
-      print('Error: $e'); // طباعة الخطأ
+      print('Error: $e');
       statusRequest = StatusRequest.serverfailure;
     } finally {
       isLoading(false);
       update();
+    }
+  }
+
+  void searchCategories(String query) {
+    if (query.isEmpty) {
+      searchedCategories.clear();
+    } else {
+      searchedCategories.assignAll(categoryList
+          .where((category) =>
+              category.name!.toLowerCase().contains(query.toLowerCase()))
+          .toList());
     }
   }
 }
