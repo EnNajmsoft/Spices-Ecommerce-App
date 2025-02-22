@@ -4,107 +4,65 @@ import 'package:Spices_Ecommerce_app/linkapi.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:Spices_Ecommerce_app/core/services/NotificationService.dart';  
 
 class CartController extends GetxController {
-  var carts = <Cart>[].obs; // قائمة العناصر في العربة
-  var isLoading = false.obs; // حالة التحميل
-  final AuthService authService = Get.find(); // الوصول إلى AuthService
+  var carts = <Cart>[].obs;
+  var isLoading = false.obs;
+  final AuthService authService = Get.find();
+  final NotificationService notificationService = NotificationService(); 
+
   @override
   void onInit() {
-    fetchCart(); // جلب البيانات تلقائيًا
+    fetchCart();
     super.onInit();
   }
 
-Future<void> fetchCart() async {
+  Future<void> fetchCart() async {
     try {
       isLoading(true);
-      final token = await authService.getToken(); // الحصول على التوكن
+      final token = await authService.getToken();
       if (token == null) {
         throw Exception('No token found');
       }
 
       final response = await http.get(
-        Uri.parse(AppLink.cartFetch), // استخدام الرابط الصحيح
+        Uri.parse(AppLink.cartFetch),
         headers: {
           'Accept': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-      );
-      print(
-          'Response body cart=============================: ${response.body}');
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        final Map<String, dynamic> data =
-            responseData['data']; // data هي Map وليست List
-
-        // تحويل البيانات إلى نموذج Cart
-        final Cart cart = Cart.fromJson(data);
-        carts.assignAll([cart]); // إضافة العربة إلى القائمة
-      } else {
-        throw Exception('Failed to load cart');
-      }
-    } catch (e) {
-      print('Error: $e');
-      Get.snackbar('Error', 'Failed to fetch cart',
-          snackPosition: SnackPosition.BOTTOM);
-    } finally {
-      isLoading(false);
-    }
-  }
-  Future<void> fetchCart2() async {
-    try {
-      isLoading(true);
-      final token = await authService.getToken(); // الحصول على التوكن
-      if (token == null) {
-        print(
-            'Response body cart=============================ffffffffffffffffffffffffffff');
-        throw Exception('No token found');
-              
-
-      }
-      // print(
-      //     'Response body cart=============================tttttttttttttttttttt');
-      final response = await http.get(
-        Uri.parse(AppLink.cartFetch), // استبدل AppLink.cart بالرابط الصحيح
-        headers: {
-            'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
       );
       print('Response body cart=============================: ${response.body}');
-
       if (response.statusCode == 200) {
-
         final Map<String, dynamic> responseData = json.decode(response.body);
-        final List<dynamic> data = responseData['data']; // تحليل البيانات
-        
-            carts.assignAll(data.map((json) => Cart.fromJson(json)).toList());
+        final Map<String, dynamic> data = responseData['data'];
+        final Cart cart = Cart.fromJson(data);
+        carts.assignAll([cart]);
       } else {
         throw Exception('Failed to load cart');
       }
     } catch (e) {
       print('Error: $e');
-      Get.snackbar('Error', 'Failed to fetch cart',
-          snackPosition: SnackPosition.BOTTOM);
+      notificationService.showErrorSnackbar('فشل في جلب العربة'); 
     } finally {
       isLoading(false);
     }
   }
 
-  // إضافة عنصر إلى العربة
   Future<void> addItem(int productId, int quantity) async {
     try {
       isLoading(true);
-      final token = await authService.getToken(); // الحصول على التوكن
+      final token = await authService.getToken();
       if (token == null) {
         throw Exception('No token found');
       }
 
       final response = await http.post(
-        Uri.parse(AppLink.cartAdd), // استبدل AppLink.cart بالرابط الصحيح
+        Uri.parse(AppLink.cartAdd),
         headers: {
-            'Accept': 'application/json',
+          'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
@@ -115,35 +73,31 @@ Future<void> fetchCart() async {
       );
 
       if (response.statusCode == 201) {
-        fetchCart(); // تحديث العربة بعد الإضافة
-        Get.snackbar('Success', 'Item added to cart',
-            snackPosition: SnackPosition.BOTTOM);
+        fetchCart();
+        notificationService.showSuccessSnackbar('تمت إضافة المنتج إلى العربة'); 
       } else {
         throw Exception('Failed to add item');
       }
     } catch (e) {
       print('Error: $e');
-      Get.snackbar('Error', 'Failed to add item to cart',
-          snackPosition: SnackPosition.BOTTOM);
+      notificationService.showErrorSnackbar('فشل في إضافة المنتج إلى العربة'); 
     } finally {
       isLoading(false);
     }
   }
 
-  // تحديث كمية عنصر في العربة
   Future<void> updateItem(int itemId, int quantity) async {
     try {
       isLoading(true);
-      final token = await authService.getToken(); // الحصول على التوكن
+      final token = await authService.getToken();
       if (token == null) {
         throw Exception('No token found');
       }
 
       final response = await http.put(
-        Uri.parse(
-            '${AppLink.cartUpdate}/$itemId'), // استبدل AppLink.cart بالرابط الصحيح
+        Uri.parse('${AppLink.cartUpdate}/$itemId'),
         headers: {
-            'Accept': 'application/json',
+          'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
@@ -153,88 +107,89 @@ Future<void> fetchCart() async {
       );
 
       if (response.statusCode == 200) {
-        fetchCart(); // تحديث العربة بعد التعديل
-        Get.snackbar('Success', 'Item quantity updated',
-            snackPosition: SnackPosition.BOTTOM);
+        fetchCart();
+        notificationService.showSuccessSnackbar('تم تحديث كمية المنتج'); 
       } else {
         throw Exception('Failed to update item');
       }
     } catch (e) {
       print('Error: $e');
-      Get.snackbar('Error', 'Failed to update item quantity',
-          snackPosition: SnackPosition.BOTTOM);
+      notificationService.showErrorSnackbar('فشل في تحديث كمية المنتج'); 
     } finally {
       isLoading(false);
     }
   }
 
-  // حذف عنصر من العربة
   Future<void> removeItem(int itemId) async {
     try {
       isLoading(true);
-      final token = await authService.getToken(); // الحصول على التوكن
+      final token = await authService.getToken();
       if (token == null) {
         throw Exception('No token found');
       }
 
       final response = await http.delete(
-        Uri.parse(
-            '${AppLink.cartRemove}/$itemId'), // استبدل AppLink.cart بالرابط الصحيح
+        Uri.parse('${AppLink.cartRemove}/$itemId'),
         headers: {
-            'Accept': 'application/json',
+          'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
       );
 
       if (response.statusCode == 200) {
-        fetchCart(); // تحديث العربة بعد الحذف
-        Get.snackbar('Success', 'Item removed from cart',
-            snackPosition: SnackPosition.BOTTOM);
+        fetchCart();
+        notificationService.showSuccessSnackbar('تم حذف المنتج من العربة'); 
       } else {
         throw Exception('Failed to remove item');
       }
     } catch (e) {
       print('Error: $e');
-      Get.snackbar('Error', 'Failed to remove item from cart',
-          snackPosition: SnackPosition.BOTTOM);
+      notificationService.showErrorSnackbar('فشل في حذف المنتج من العربة'); 
     } finally {
       isLoading(false);
     }
   }
 
-  // حذف العربة بالكامل
   Future<void> clearCart() async {
     try {
       isLoading(true);
-      final token = await authService.getToken(); // الحصول على التوكن
+      final token = await authService.getToken();
       if (token == null) {
         throw Exception('No token found');
       }
 
       final response = await http.post(
-        Uri.parse(
-            AppLink.cartClear), // استبدل AppLink.cart بالرابط الصحيح
+        Uri.parse(AppLink.cartClear),
         headers: {
-            'Accept': 'application/json',
+          'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
       );
 
       if (response.statusCode == 200) {
-        carts.clear(); // تفريغ قائمة العناصر
-        Get.snackbar('Success', 'Cart cleared successfully',
-            snackPosition: SnackPosition.BOTTOM);
+        carts.clear();
+        notificationService.showSuccessSnackbar('تم تفريغ العربة بنجاح'); 
       } else {
         throw Exception('Failed to clear cart');
       }
     } catch (e) {
       print('Error: $e');
-      Get.snackbar('Error', 'Failed to clear cart',
-          snackPosition: SnackPosition.BOTTOM);
+      notificationService.showErrorSnackbar('فشل في تفريغ العربة'); 
     } finally {
       isLoading(false);
     }
+  }
+
+  double calculateTotal() {
+    if (carts.isEmpty || carts[0].cartItems.isEmpty) {
+      return 0.0;
+    }
+    double total = 0.0;
+    for (var item in carts[0].cartItems) {
+      total += item.product.price * item.quantity;
+    }
+    return total;
   }
 }

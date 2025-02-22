@@ -3,14 +3,14 @@ class Cart {
   final int userId;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final List<CartItem> items;
+  final List<CartItem> cartItems;
 
   Cart({
     required this.id,
     required this.userId,
     required this.createdAt,
     required this.updatedAt,
-    required this.items,
+    required this.cartItems,
   });
 
   factory Cart.fromJson(Map<String, dynamic> json) {
@@ -19,8 +19,11 @@ class Cart {
       userId: json['user_id'],
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
-      items: List<CartItem>.from(
-          json['items'].map((item) => CartItem.fromJson(item))),
+      cartItems: json['cart_items'] != null
+          ? List<CartItem>.from(
+              json['cart_items'].map((item) => CartItem.fromJson(item)),
+            )
+          : [],
     );
   }
 }
@@ -64,7 +67,7 @@ class Product {
   final double price;
   final double salePrice;
   final int subCategoryId;
-  final String imageUrl;
+  final String image;
   final String summary;
   final String description;
   final int unitId;
@@ -81,7 +84,7 @@ class Product {
     required this.price,
     required this.salePrice,
     required this.subCategoryId,
-    required this.imageUrl,
+    required this.image,
     required this.summary,
     required this.description,
     required this.unitId,
@@ -100,7 +103,7 @@ class Product {
       price: json['price'].toDouble(),
       salePrice: json['sale_price'].toDouble(),
       subCategoryId: json['sub_category_id'],
-      imageUrl: json['image_url'],
+      image: json['image'],
       summary: json['summary'],
       description: json['description'],
       unitId: json['unit_id'],

@@ -1,6 +1,6 @@
+import 'package:Spices_Ecommerce_app/controller/CartController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:Spices_Ecommerce_app/controller/CartController.dart'; // استبدل بمسار CartController الخاص بك
 import '../../../core/components/dotted_divider.dart';
 import '../../../core/constants/constants.dart';
 import 'item_row.dart';
@@ -17,7 +17,7 @@ class ItemTotalsAndPrice extends StatelessWidget {
     double totalWeight = 0;
 
     for (var cart in cartController.carts) {
-      for (var item in cart.items) {
+      for (var item in cart.cartItems) {
         totalItems += item.quantity;
         totalPrice += item.product.salePrice * item.quantity;
         totalWeight += item.product.quantity * item.quantity;
@@ -38,7 +38,7 @@ class ItemTotalsAndPrice extends StatelessWidget {
     return Obx(() {
       // التحقق من وجود عناصر في العربة
       if (cartController.carts.isEmpty ||
-          cartController.carts.first.items.isEmpty) {
+          cartController.carts.first.cartItems.isEmpty) {
         return const Center(child: Text('Your cart is empty'));
       }
 

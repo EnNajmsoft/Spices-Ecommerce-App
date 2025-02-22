@@ -33,7 +33,7 @@ class SingleCartItemTile extends StatelessWidget {
                 child: AspectRatio(
                   aspectRatio: 1 / 1,
                   child: NetworkImageWithLoader(
-                    item.product.imageUrl,
+                    item.product.image,
                     fit: BoxFit.contain,
                   ),
                 ),
