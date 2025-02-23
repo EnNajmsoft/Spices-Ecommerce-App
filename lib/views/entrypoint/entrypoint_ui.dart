@@ -1,16 +1,17 @@
+import 'package:Spices_Ecommerce_app/views/OrdersPage.dart';
+import 'package:Spices_Ecommerce_app/views/home/home_screen.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../core/constants/app_icons.dart';
-
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_defaults.dart';
 import '../cart/cart_page.dart';
-import '../home/home_page.dart';
 import '../menu/menu_page.dart';
 import '../profile/profile_page.dart';
 import '../save/save_page.dart';
 import 'components/app_navigation_bar.dart';
+
 
 /// This page will contain all the bottom navigation tabs
 class EntryPointUI extends StatefulWidget {
@@ -32,10 +33,10 @@ class _EntryPointUIState extends State<EntryPointUI> {
 
   /// All the pages
   List<Widget> pages = [
-    const HomePage(),
-     MenuPage(),
-    const CartPage(isHomePage: true),
-     SavePage(isHomePage: false),
+    HomeScreen(), // استخدام HomeScreen هنا
+    OrdersPage(),
+    CartPage(isHomePage: true),
+    SavePage(isHomePage: false),
     const ProfilePage(),
   ];
 

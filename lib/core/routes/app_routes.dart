@@ -1,4 +1,5 @@
 import 'package:Spices_Ecommerce_app/data/model/Product.dart';
+import 'package:Spices_Ecommerce_app/views/OrdersPage.dart';
 import 'package:Spices_Ecommerce_app/views/auth/VerifyOtpPage.dart';
 import 'package:Spices_Ecommerce_app/views/auth/login_or_signup_page.dart';
 import 'package:Spices_Ecommerce_app/views/auth/login_page.dart';
@@ -72,6 +73,9 @@ class AppRoutes {
   static const orderFailed = '/orderFailed';
   static const noOrderYet = '/noOrderYet';
 
+  static const ordersPage = '/ordersPage';
+  
+
   /// Category
   static const category = '/category';
   static const categoryDetails = '/categoryDetails';
@@ -114,6 +118,7 @@ class AppRoutes {
   static const paymentCardAdd = '/paymentCardAdd';
 
   static final List<GetPage> routes = [
+    
     GetPage(
       name: entryPoint,
       page: () => const EntryPointUI(),
@@ -187,6 +192,11 @@ GetPage(
       name: cartPage,
       page: () => CartPage(),
     ),
+        GetPage(
+      name: ordersPage,
+      page: () => const OrdersPage(),
+    ),
+    
     // GetPage(
     //   name: savePage,
     //   page: () => FavouriteListPage(),

@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:Spices_Ecommerce_app/core/routes/app_routes.dart';
 import 'package:Spices_Ecommerce_app/core/services/services.dart';
@@ -14,8 +13,8 @@ Future<bool> alertExitAdminApp() {
       actions: [
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
-              Color.fromARGB(255, 8, 168, 217),
+                backgroundColor: WidgetStateProperty.all(
+              const Color.fromARGB(255, 8, 168, 217),
             )),
             onPressed: () {
               myServices.sharedPreferences.setString("step", "1");
@@ -26,8 +25,8 @@ Future<bool> alertExitAdminApp() {
             child: const Text("تاكيد")),
         ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
-              Color.fromARGB(255, 8, 168, 217),
+                backgroundColor: WidgetStateProperty.all(
+              const Color.fromARGB(255, 8, 168, 217),
             )),
             onPressed: () {
               Get.back();

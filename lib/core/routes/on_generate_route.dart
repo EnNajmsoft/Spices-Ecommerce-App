@@ -6,7 +6,6 @@ import '../../views/auth/login_or_signup_page.dart';
 import '../../views/auth/login_page.dart';
 import '../../views/auth/number_verification_page.dart';
 import '../../views/auth/password_reset_page.dart';
-import '../../views/auth/sign_up_page.dart';
 import '../../views/cart/cart_page.dart';
 import '../../views/cart/checkout_page.dart';
 import '../../views/drawer/about_us_page.dart';
@@ -70,7 +69,7 @@ class RouteGenerator {
         return CupertinoPageRoute(builder: (_) => const SearchResultPage());
 
       case AppRoutes.cartPage:
-        return CupertinoPageRoute(builder: (_) => const CartPage());
+        return CupertinoPageRoute(builder: (_) =>  CartPage());
 
       case AppRoutes.savePage:
         return CupertinoPageRoute(builder: (_) =>  SavePage());
@@ -82,7 +81,7 @@ class RouteGenerator {
         return CupertinoPageRoute(builder: (_) =>  CategoryProductPage());
 
       case AppRoutes.login:
-        return CupertinoPageRoute(builder: (_) =>  LoginPage());
+        return CupertinoPageRoute(builder: (_) =>  const LoginPage());
 
       // case AppRoutes.signup:
       //   return CupertinoPageRoute(builder: (_) => const SignUpPage());
@@ -108,13 +107,13 @@ class RouteGenerator {
 
       case AppRoutes.bundleProduct:
         return CupertinoPageRoute(
-            builder: (_) =>  BundleProductDetailsPage());
+            builder: (_) =>  const BundleProductDetailsPage());
 
       case AppRoutes.bundleDetailsPage:
         return CupertinoPageRoute(builder: (_) => const BundleDetailsPage());
 
       case AppRoutes.productDetails:
-        return CupertinoPageRoute(builder: (_) => const ProductDetailsPage());
+        return CupertinoPageRoute(builder: (_) =>  ProductDetailsPage2());
 
       case AppRoutes.createMyPack:
         return CupertinoPageRoute(builder: (_) => const BundleCreatePage());

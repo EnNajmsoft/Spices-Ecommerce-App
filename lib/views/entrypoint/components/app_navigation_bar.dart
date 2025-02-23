@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_svg/svg.dart';
 import '../../../core/constants/constants.dart';
-import 'bottom_app_bar_item.dart';
 
 class AppBottomNavigationBar extends StatelessWidget {
   const AppBottomNavigationBar({
@@ -22,14 +21,12 @@ class AppBottomNavigationBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          BottomAppBarItem(
-            name: 'Home',
+          _buildBottomAppBarItem(
             iconLocation: AppIcons.home,
             isActive: currentIndex == 0,
             onTap: () => onNavTap(0),
           ),
-          BottomAppBarItem(
-            name: 'Menu',
+          _buildBottomAppBarItem(
             iconLocation: AppIcons.menu,
             isActive: currentIndex == 1,
             onTap: () => onNavTap(1),
@@ -38,21 +35,39 @@ class AppBottomNavigationBar extends StatelessWidget {
             padding: EdgeInsets.all(AppDefaults.padding * 2),
             child: SizedBox(width: AppDefaults.margin),
           ),
-          /* <---- We have to leave this 3rd index (2) for the cart item -----> */
-
-          BottomAppBarItem(
-            name: 'Save',
+          _buildBottomAppBarItem(
             iconLocation: AppIcons.save,
             isActive: currentIndex == 3,
             onTap: () => onNavTap(3),
           ),
-          BottomAppBarItem(
-            name: 'Profile',
+          _buildBottomAppBarItem(
             iconLocation: AppIcons.profile,
             isActive: currentIndex == 4,
             onTap: () => onNavTap(4),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildBottomAppBarItem({
+    required String iconLocation,
+    required bool isActive,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: AppDefaults.padding),
+        child: SvgPicture.asset(
+          iconLocation,
+          width: 28, // زيادة حجم الأيقونة
+          height: 28,
+          colorFilter: ColorFilter.mode(
+            isActive ? AppColors.primary : Colors.grey,
+            BlendMode.srcIn,
+          ),
+        ),
       ),
     );
   }
