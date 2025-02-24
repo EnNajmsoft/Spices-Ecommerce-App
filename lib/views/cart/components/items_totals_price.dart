@@ -17,11 +17,11 @@ class ItemTotalsAndPrice extends StatelessWidget {
     double totalWeight = 0;
 
     for (var cart in cartController.carts) {
-      for (var item in cart.cartItems) {
-        totalItems += item.quantity;
-        totalPrice += item.product.salePrice * item.quantity;
-        totalWeight += item.product.quantity * item.quantity;
-      }
+      // for (var item in cart.items) {
+      //   totalItems += item.quantity!;
+      //   totalPrice += item.product!.salePrice * item.quantity;
+      //   totalWeight += item.product!.quantity * item.quantity;
+      // }
     }
 
     return {
@@ -38,7 +38,7 @@ class ItemTotalsAndPrice extends StatelessWidget {
     return Obx(() {
       // التحقق من وجود عناصر في العربة
       if (cartController.carts.isEmpty ||
-          cartController.carts.first.cartItems.isEmpty) {
+          cartController.carts.first.items!.isEmpty) {
         return const Center(child: Text('Your cart is empty'));
       }
 

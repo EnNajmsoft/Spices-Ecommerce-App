@@ -4,13 +4,13 @@ import 'package:Spices_Ecommerce_app/linkapi.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:Spices_Ecommerce_app/core/services/NotificationService.dart';  
+import 'package:Spices_Ecommerce_app/core/services/NotificationService.dart';
 
 class CartController extends GetxController {
   var carts = <Cart>[].obs;
   var isLoading = false.obs;
   final AuthService authService = Get.find();
-  final NotificationService notificationService = NotificationService(); 
+  final NotificationService notificationService = NotificationService();
 
   @override
   void onInit() {
@@ -22,9 +22,7 @@ class CartController extends GetxController {
     try {
       isLoading(true);
       final token = await authService.getToken();
-      if (token == null) {
-        throw Exception('No token found');
-      }
+      if (token == null) throw Exception('No token found');
 
       final response = await http.get(
         Uri.parse(AppLink.cartFetch),
@@ -34,22 +32,55 @@ class CartController extends GetxController {
           'Authorization': 'Bearer $token',
         },
       );
-      print('Response body cart=============================: ${response.body}');
+
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        final Map<String, dynamic> data = responseData['data'];
-        final Cart cart = Cart.fromJson(data);
+           print(
+            'Response body cart=============================: ${response.body}');
+        final responseData = json.decode(response.body);
+        final cart = Cart.fromJson(responseData['data']);
         carts.assignAll([cart]);
       } else {
         throw Exception('Failed to load cart');
       }
     } catch (e) {
       print('Error: $e');
-      notificationService.showErrorSnackbar('فشل في جلب العربة'); 
+      notificationService.showErrorSnackbar('فشل في جلب العربة');
     } finally {
       isLoading(false);
     }
   }
+  // Future<void> fetchCart() async {
+  //   try {
+  //     isLoading(true);
+  //     final token = await authService.getToken();
+  //     if (token == null) {
+  //       throw Exception('No token found');
+  //     }
+
+  //     final response = await http.get(
+  //       Uri.parse(AppLink.cartFetch),
+  //       headers: {
+  //         'Accept': 'application/json',
+  //         'Content-Type': 'application/json',
+  //         'Authorization': 'Bearer $token',
+  //       },
+  //     );
+  //     print('Response body cart=============================: ${response.body}');
+  //     if (response.statusCode == 200) {
+  //       final Map<String, dynamic> responseData = json.decode(response.body);
+  //       final Map<String, dynamic> data = responseData['data'];
+  //       final Cart cart = Cart.fromJson(data);
+  //       carts.assignAll([cart]);
+  //     } else {
+  //       throw Exception('Failed to load cart');
+  //     }
+  //   } catch (e) {
+  //     print('Error: $e');
+  //     notificationService.showErrorSnackbar('فشل في جلب العربة');
+  //   } finally {
+  //     isLoading(false);
+  //   }
+  // }
 
   Future<void> addItem(int productId, int quantity) async {
     try {
@@ -74,13 +105,13 @@ class CartController extends GetxController {
 
       if (response.statusCode == 201) {
         fetchCart();
-        notificationService.showSuccessSnackbar('تمت إضافة المنتج إلى العربة'); 
+        notificationService.showSuccessSnackbar('تمت إضافة المنتج إلى العربة');
       } else {
         throw Exception('Failed to add item');
       }
     } catch (e) {
       print('Error: $e');
-      notificationService.showErrorSnackbar('فشل في إضافة المنتج إلى العربة'); 
+      notificationService.showErrorSnackbar('فشل في إضافة المنتج إلى العربة');
     } finally {
       isLoading(false);
     }
@@ -108,13 +139,13 @@ class CartController extends GetxController {
 
       if (response.statusCode == 200) {
         fetchCart();
-        notificationService.showSuccessSnackbar('تم تحديث كمية المنتج'); 
+        notificationService.showSuccessSnackbar('تم تحديث كمية المنتج');
       } else {
-        throw Exception('Failed to update item');
+        throw Exception('Failed to update item${response.statusCode}');
       }
     } catch (e) {
       print('Error: $e');
-      notificationService.showErrorSnackbar('فشل في تحديث كمية المنتج'); 
+      notificationService.showErrorSnackbar('فشل في تحديث كمية المنتج');
     } finally {
       isLoading(false);
     }
@@ -139,13 +170,13 @@ class CartController extends GetxController {
 
       if (response.statusCode == 200) {
         fetchCart();
-        notificationService.showSuccessSnackbar('تم حذف المنتج من العربة'); 
+        notificationService.showSuccessSnackbar('تم حذف المنتج من العربة');
       } else {
         throw Exception('Failed to remove item');
       }
     } catch (e) {
       print('Error: $e');
-      notificationService.showErrorSnackbar('فشل في حذف المنتج من العربة'); 
+      notificationService.showErrorSnackbar('فشل في حذف المنتج من العربة');
     } finally {
       isLoading(false);
     }
@@ -170,24 +201,24 @@ class CartController extends GetxController {
 
       if (response.statusCode == 200) {
         carts.clear();
-        notificationService.showSuccessSnackbar('تم تفريغ العربة بنجاح'); 
+        notificationService.showSuccessSnackbar('تم تفريغ العربة بنجاح');
       } else {
         throw Exception('Failed to clear cart');
       }
     } catch (e) {
       print('Error: $e');
-      notificationService.showErrorSnackbar('فشل في تفريغ العربة'); 
+      notificationService.showErrorSnackbar('فشل في تفريغ العربة');
     } finally {
       isLoading(false);
     }
   }
 
   double calculateTotal() {
-    if (carts.isEmpty || carts[0].cartItems.isEmpty) {
+    if (carts.isEmpty || carts[0].items!.isEmpty) {
       return 0.0;
     }
     double total = 0.0;
-    for (var item in carts[0].cartItems) {
+    for (var item in carts[0].items ?? []) {
       total += item.product.price * item.quantity;
     }
     return total;

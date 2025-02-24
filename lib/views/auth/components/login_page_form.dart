@@ -33,6 +33,7 @@ class LoginPageForm extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(AppDefaults.padding),
           child: Form(
+            
             key: _key,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

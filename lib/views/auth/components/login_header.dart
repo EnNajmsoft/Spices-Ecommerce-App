@@ -36,7 +36,7 @@ class LoginPageHeader extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(100),
-                child: Image.asset(AppImages.roundedLogo, fit: BoxFit.cover),
+                child: Image.asset(AppImages.logo, fit: BoxFit.cover),
               ),
             ),
           ),
@@ -47,7 +47,7 @@ class LoginPageHeader extends StatelessWidget {
             return textGradient.createShader(bounds);
           },
           child: Text(
-            'مرحباً بكم في',
+            ' مرحباً بكم في جزيرة العطار',
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,

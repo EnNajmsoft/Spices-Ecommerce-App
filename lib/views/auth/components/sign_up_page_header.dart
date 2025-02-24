@@ -35,7 +35,7 @@ class SignUpPageHeader extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(100),
-                child: Image.asset(AppImages.roundedLogo, fit: BoxFit.cover),
+                child: Image.asset(AppImages.logo, fit: BoxFit.cover),
                 // child: Image.asset(AppImages.logo, fit: BoxFit.cover),
               ),
             ),

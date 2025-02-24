@@ -9,40 +9,36 @@ class CategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin:
-          const EdgeInsets.symmetric(horizontal: 8.0), // تقليل التباعد الجانبي
+      margin: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
         children: [
           Container(
-            // إضافة حاوية دائرية للصورة
-            width: 60,
-            height: 60,
+            width: 70,
+            height: 70,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               boxShadow: [
-                // إضافة ظل خفيف
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                  offset: Offset(0, 3),
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 3,
+                  blurRadius: 7,
+                  offset: Offset(0, 5),
                 ),
               ],
             ),
             child: ClipOval(
-              // قص الصورة داخل دائرة
               child: Image.network(
                 category.image ?? '',
-                width: 60,
-                height: 60,
+                width: 70,
+                height: 70,
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          const SizedBox(height: 4), // إضافة تباعد بين الصورة والنص
+          const SizedBox(height: 8),
           Text(
             category.name!,
-            style: const TextStyle(fontSize: 12), // تعديل حجم الخط
+            style: const TextStyle(fontSize: 14),
           ),
         ],
       ),

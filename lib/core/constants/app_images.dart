@@ -1,6 +1,6 @@
 class AppImages {
   static const roundedLogo = 'assets/images/image1_39880.png';
-  static const logo = 'assets/images/log.png';
+  static const logo = 'assets/images/log.jpeg';
 
   /* <---- Homepage banner -----> */
   static const homePageBanner = 'https://i.imgur.com/8hBIsS5.png';

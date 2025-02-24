@@ -194,7 +194,7 @@ GetPage(
     ),
         GetPage(
       name: ordersPage,
-      page: () => const OrdersPage(),
+      page: () =>  OrdersPage(),
     ),
     
     // GetPage(
@@ -203,7 +203,7 @@ GetPage(
     // ),
     GetPage(
       name: checkoutPage,
-      page: () => const CheckoutPage(),
+      page: () =>  CheckoutPage(),
     ),
 
     // صفحات حالة الطلب

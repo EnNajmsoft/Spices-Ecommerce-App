@@ -40,6 +40,7 @@ class _SignUpFormState extends State<SignUpForm> {
         child: Padding(
           padding: const EdgeInsets.all(AppDefaults.padding),
           child: Form(
+
             key: _key,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

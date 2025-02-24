@@ -22,33 +22,39 @@ class ProfileMenuOptions extends StatelessWidget {
       child: Column(
         children: [
           ProfileListTile(
-            title: 'My Profile',
+            title: 'بروفايلي',
             icon: AppIcons.profilePerson,
             onTap: () => Navigator.pushNamed(context, AppRoutes.profileEdit),
           ),
           const Divider(thickness: 0.1),
           ProfileListTile(
-            title: 'Notification',
+            title: 'الاشعارات',
             icon: AppIcons.profileNotification,
-            onTap: () => Navigator.pushNamed(context, AppRoutes.notifications),
+            onTap: () {
+              // Navigator.pushNamed(context, AppRoutes.notifications);
+            },
           ),
           const Divider(thickness: 0.1),
           ProfileListTile(
-            title: 'Setting',
+            title: 'اعدادات',
             icon: AppIcons.profileSetting,
-            onTap: () => Navigator.pushNamed(context, AppRoutes.settings),
+            onTap: () {
+// Navigator.pushNamed(context, AppRoutes.settings);
+            } 
           ),
           const Divider(thickness: 0.1),
-          ProfileListTile(
-            title: 'Payment',
-            icon: AppIcons.profilePayment,
-            onTap: () => Navigator.pushNamed(context, AppRoutes.paymentMethod),
-          ),
+          // ProfileListTile(
+          //   title: 'Payment',
+          //   icon: AppIcons.profilePayment,
+          //   onTap: () => Navigator.pushNamed(context, AppRoutes.paymentMethod),
+          // ),
           const Divider(thickness: 0.1),
           ProfileListTile(
-            title: 'Logout',
+            title: 'تسجيل الخروج ',
             icon: AppIcons.profileLogout,
-            onTap: () => Navigator.pushNamed(context, AppRoutes.loginOrSignup),
+            onTap: (){
+              // Navigator.pushNamed(context, 
+            } 
           ),
         ],
       ),

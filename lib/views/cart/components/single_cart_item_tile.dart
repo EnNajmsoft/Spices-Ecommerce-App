@@ -12,7 +12,7 @@ class SingleCartItemTile extends StatelessWidget {
     required this.onQuantityUpdate,
   });
 
-  final CartItem item;
+  final Items item;
   final VoidCallback onRemove;
   final Function(int) onQuantityUpdate;
 
@@ -33,7 +33,7 @@ class SingleCartItemTile extends StatelessWidget {
                 child: AspectRatio(
                   aspectRatio: 1 / 1,
                   child: NetworkImageWithLoader(
-                    item.product.image,
+                    item.product!.image!,
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -50,14 +50,14 @@ class SingleCartItemTile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          item.product.name,
+                          item.product!.name!,
                           style: Theme.of(context)
                               .textTheme
                               .bodyLarge
                               ?.copyWith(color: Colors.black),
                         ),
                         Text(
-                          '${item.product.quantity} Ml',
+                          '${item.product!.quantity} Ml',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
@@ -67,7 +67,7 @@ class SingleCartItemTile extends StatelessWidget {
                     children: [
                       IconButton(
                         onPressed: () {
-                          onQuantityUpdate(item.quantity + 1); // زيادة الكمية
+                          onQuantityUpdate(item.quantity! + 1); // زيادة الكمية
                         },
                         icon: SvgPicture.asset(AppIcons.addQuantity),
                         constraints: const BoxConstraints(),
@@ -85,8 +85,8 @@ class SingleCartItemTile extends StatelessWidget {
                       ),
                       IconButton(
                         onPressed: () {
-                          if (item.quantity > 1) {
-                            onQuantityUpdate(item.quantity - 1); // تقليل الكمية
+                          if (item.quantity! > 1) {
+                            onQuantityUpdate(item.quantity! - 1); // تقليل الكمية
                           }
                         },
                         icon: SvgPicture.asset(AppIcons.removeQuantity),
@@ -107,7 +107,7 @@ class SingleCartItemTile extends StatelessWidget {
                     icon: SvgPicture.asset(AppIcons.delete),
                   ),
                   const SizedBox(height: 16),
-                  Text('\$${item.product.salePrice}'),
+                  Text('\$${item.product!.salePrice}'),
                 ],
               )
             ],

@@ -8,6 +8,7 @@ import 'package:Spices_Ecommerce_app/views/home/category_card.dart';
 import 'package:Spices_Ecommerce_app/views/home/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -25,40 +26,89 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: TextField(
-          decoration: InputDecoration(
-            hintText: 'ابحث عن المنتجات...',
-            prefixIcon: Icon(Icons.search),
-            border: InputBorder.none,
+      appBar: PreferredSize(
+        // استخدام PreferredSize لتحديد ارتفاع AppBar مع padding
+        preferredSize:
+            Size.fromHeight(kToolbarHeight + 10), // إضافة 10 وحدات padding أسفل
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 10), // تحديد padding أسفل
+          child: AppBar(
+            title: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color.fromARGB(255, 2, 191, 128),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'ابحث عن المنتجات...',
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Color.fromARGB(255, 2, 191, 128),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                ),
+                onChanged: (value) {
+                  _performSearch(value);
+                },
+              ),
+            ),
+            actions: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                margin: const EdgeInsets.symmetric(horizontal: 8),
+                child: IconButton(
+                  icon: Icon(Icons.filter_list),
+                  onPressed: () {
+                    _showFilterDialog(context);
+                  },
+                ),
+              ),
+            ],
+            backgroundColor: const Color.fromARGB(255, 2, 191, 128),
+            elevation: 2,
           ),
-          onChanged: (value) {
-            _performSearch(value);
-          },
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.filter_list),
-            onPressed: () {
-              _showFilterDialog(context);
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              // افتح القائمة الجانبية
-            },
-          ),
-        ],
-        backgroundColor: Colors.white,
-        elevation: 0,
       ),
       body: Stack(
         children: [
           Obx(() {
             if (productController.isLoading.value ||
                 categoryController.isLoading.value) {
-              return Center(child: CircularProgressIndicator());
+              return Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: Column(
+                  children: [
+                    Container(
+                      width: 150,
+                      height: 100,
+                      color: Colors.white,
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      width: 200,
+                      height: 20,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              );
             } else if (productController.statusRequest ==
                     StatusRequest.failure ||
                 categoryController.statusRequest == StatusRequest.failure) {
@@ -72,29 +122,28 @@ class _HomeScreenState extends State<HomeScreen> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 8.0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment:
+                            MainAxisAlignment.center, // توسيط النص
                         children: [
                           Text('الفئات',
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold)),
-                          IconButton(
-                            icon: Icon(Icons.arrow_forward_ios),
-                            onPressed: () {
-                              // عرض المزيد من الفئات
-                            },
-                          ),
                         ],
                       ),
                     ),
                     Container(
-                      height: 100,
+                      height: 120,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: categoryController.categoryList.length,
                         itemBuilder: (context, index) {
                           final category =
                               categoryController.categoryList[index];
-                          return CategoryCard(category: category);
+                          return Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: CategoryCard(category: category),
+                          );
                         },
                       ),
                     ),
@@ -102,17 +151,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 8.0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment:
+                            MainAxisAlignment.center, // توسيط النص
                         children: [
-                          Text('المنتجات المميزة',
+                          Text('المنتجات ',
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold)),
-                          IconButton(
-                            icon: Icon(Icons.arrow_forward_ios),
-                            onPressed: () {
-                              // عرض المزيد من المنتجات
-                            },
-                          ),
+                          // IconButton(
+                          //   icon: Icon(Icons.filter_list),
+                          //   onPressed: () {
+                          //     _showFilterDialog(context);
+                          //   },
+                          // ),
                         ],
                       ),
                     ),
@@ -120,13 +170,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 0.7,
-                      ),
+                          crossAxisCount: 2, childAspectRatio: 0.7),
                       itemCount: productController.productList.length,
                       itemBuilder: (context, index) {
                         final product = productController.productList[index];
-                        return ProductCard(product: product);
+                        return Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: ProductCard(product: product));
                       },
                     ),
                   ],
@@ -136,11 +186,10 @@ class _HomeScreenState extends State<HomeScreen> {
           }),
           if (_showDropdown)
             Positioned(
-              top: 25, // تعديل الموقع حسب الحاجة
+              top: 25,
               left: 0,
               right: 0,
-              height:
-                  MediaQuery.of(context).size.height * 0.4, // نصف الشاشة أو أقل
+              height: MediaQuery.of(context).size.height * 0.4,
               child: Container(
                 color: Colors.white,
                 child: ListView.builder(
@@ -161,7 +210,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
   void _performSearch(String query) {
     if (query.isEmpty) {
       setState(() {
@@ -184,11 +232,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildProductSearchResult(Product product) {
     return ListTile(
-      leading: Image.network(product.image!, width: 50, height: 50),
-      title: Text(product.name!),
+      leading: Image.network(product.image!,
+          width: 60, height: 60, fit: BoxFit.cover),
+      title: Text(
+        product.name!,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
       subtitle: Text('${product.price} ريال'),
       onTap: () {
-        // التعامل مع اختيار المنتج
         setState(() {
           _showDropdown = false;
         });
@@ -198,10 +250,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildCategorySearchResult(ProdCategory category) {
     return ListTile(
-      leading: Image.network(category.image!, width: 50, height: 50),
-      title: Text(category.name!),
+      leading: Image.network(category.image!,
+          width: 60, height: 60, fit: BoxFit.cover),
+      title: Text(
+        category.name!,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
       onTap: () {
-        // التعامل مع اختيار القسم
         setState(() {
           _showDropdown = false;
         });

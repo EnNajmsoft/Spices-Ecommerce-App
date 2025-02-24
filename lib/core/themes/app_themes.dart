@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart'; // إضافة استيراد حزمة google_fonts
 
 import '../constants/app_colors.dart';
 import '../constants/app_defaults.dart';
@@ -8,23 +9,26 @@ class AppTheme {
   static ThemeData get defaultTheme {
     return ThemeData(
       colorSchemeSeed: AppColors.primary,
-      fontFamily: "Gilroy",
-      textTheme: const TextTheme(
-        bodyLarge: TextStyle(color: AppColors.placeholder),
-        bodyMedium: TextStyle(color: AppColors.placeholder),
+      fontFamily: GoogleFonts.cairo().fontFamily, // تغيير الخط إلى Cairo
+      textTheme: GoogleFonts.cairoTextTheme(
+        // تطبيق Cairo على TextTheme
+        const TextTheme(
+          bodyLarge: TextStyle(color: AppColors.placeholder),
+          bodyMedium: TextStyle(color: AppColors.placeholder),
+        ),
       ),
       scaffoldBackgroundColor: Colors.white,
       brightness: Brightness.light,
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         elevation: 0.3,
         backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
         titleTextStyle: TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.bold,
-          fontFamily: "Gilroy",
+          fontFamily: GoogleFonts.cairo().fontFamily, // تغيير الخط إلى Cairo
         ),
-        systemOverlayStyle: SystemUiOverlayStyle(
+        systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarBrightness: Brightness.light,
         ),
       ),
@@ -52,9 +56,9 @@ class AppTheme {
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          textStyle: const TextStyle(
+          textStyle: TextStyle(
             fontWeight: FontWeight.bold,
-            fontFamily: 'Gilroy',
+            fontFamily: GoogleFonts.cairo().fontFamily, // تغيير الخط إلى Cairo
           ),
         ),
       ),

@@ -1,13 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // Import shared_preferences
 
 import '../../../core/components/network_image.dart';
 import '../../../core/constants/constants.dart';
 import 'profile_header_options.dart';
 
-class ProfileHeader extends StatelessWidget {
+class ProfileHeader extends StatefulWidget {
+  // Make it StatefulWidget
   const ProfileHeader({
     super.key,
   });
+
+  @override
+  _ProfileHeaderState createState() => _ProfileHeaderState();
+}
+
+class _ProfileHeaderState extends State<ProfileHeader> {
+  String _userName = 'زائر كريم'; // Default values
+  String _userId = 'N/A000000456';
+  String _profileImageUrl =
+      'https://images.unsplash.com/photo-1628157588553-5eeea00af15c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _userName = prefs.getString('userName') ?? _userName;
+      _userId = prefs.getString('userId') ?? _userId;
+      _profileImageUrl = prefs.getString('profileImageUrl') ?? _profileImageUrl;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +47,7 @@ class ProfileHeader extends StatelessWidget {
         Column(
           children: [
             AppBar(
-              title: const Text('Profile'),
+              title: const Text('بروفايلي'),
               elevation: 0,
               backgroundColor: Colors.transparent,
               titleTextStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -28,7 +55,11 @@ class ProfileHeader extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
             ),
-            const _UserData(),
+            _UserData(
+              userName: _userName,
+              userId: _userId,
+              profileImageUrl: _profileImageUrl,
+            ),
             const ProfileHeaderOptions()
           ],
         ),
@@ -38,7 +69,15 @@ class ProfileHeader extends StatelessWidget {
 }
 
 class _UserData extends StatelessWidget {
-  const _UserData();
+  const _UserData({
+    required this.userName,
+    required this.userId,
+    required this.profileImageUrl,
+  });
+
+  final String userName;
+  final String userId;
+  final String profileImageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -47,14 +86,14 @@ class _UserData extends StatelessWidget {
       child: Row(
         children: [
           const SizedBox(width: AppDefaults.padding),
-          const SizedBox(
+          SizedBox(
             width: 100,
             height: 100,
             child: ClipOval(
               child: AspectRatio(
-                  aspectRatio: 1 / 1,
-                  child: NetworkImageWithLoader(
-                      'https://images.unsplash.com/photo-1628157588553-5eeea00af15c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80')),
+                aspectRatio: 1 / 1,
+                child: NetworkImageWithLoader(profileImageUrl),
+              ),
             ),
           ),
           const SizedBox(width: AppDefaults.padding),
@@ -62,13 +101,13 @@ class _UserData extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Shakibul Islam',
+                userName,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold, color: Colors.white),
               ),
               const SizedBox(height: 8),
               Text(
-                'ID: 1540580',
+                'ID: $userId',
                 style: Theme.of(context)
                     .textTheme
                     .bodyLarge

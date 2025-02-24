@@ -1,3 +1,4 @@
+import 'package:Spices_Ecommerce_app/views/profile/address/address_page.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/constants.dart';
@@ -23,24 +24,25 @@ class ProfileHeaderOptions extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           ProfileSqureTile(
-            label: 'All Order',
+            label: 'طلباتي',
             icon: AppIcons.truckIcon,
             onTap: () {
-              Navigator.pushNamed(context, AppRoutes.myOrder);
+              Navigator.pushNamed(context, AppRoutes.ordersPage);
             },
           ),
           ProfileSqureTile(
-            label: 'Voucher',
-            icon: AppIcons.voucher,
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.coupon);
-            },
-          ),
-          ProfileSqureTile(
-            label: 'Address',
+            label: 'عنواني',
             icon: AppIcons.homeProfile,
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.deliveryAddress);
+            onTap: () async {
+              // استخدام await للحصول على نتيجة الصفحة
+              final result = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AddressPage()),
+              );
+              if (result != null) {
+                // هنا يمكنك استخدام النتيجة (العنوان)
+                print('New Address: ${result.street}, ${result.city}, ${result.postalCode}, ${result.country}');
+              }
             },
           ),
         ],

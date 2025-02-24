@@ -36,7 +36,7 @@ class ProductController extends GetxController {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          // 'Authorization': 'Bearer $token',
+          'Authorization': 'Bearer $token',
         },
         body: json.encode(requestBody),
       );

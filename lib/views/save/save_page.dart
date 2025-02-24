@@ -2,108 +2,109 @@ import 'package:Spices_Ecommerce_app/controller/FavoriteController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../core/components/app_bar.dart';
 import 'empty_save_page.dart';
 
 class SavePage extends StatelessWidget {
   final FavoriteController favoriteController = Get.put(FavoriteController());
-
-  SavePage({
-    super.key,
-    this.isHomePage = false,
-  });
-
   final bool isHomePage;
+
+  SavePage({super.key, this.isHomePage = false});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('المفضلة'),
-      ),
-      body: Obx(() {
+ return Scaffold(
+    appBar: buildAppBar(context, 'مفضلاتي',
+      showBackButton: true, // عرض زر الرجوع
+      showSearchButton: false, // إخفاء زر البحث
+      backgroundColor: Colors.teal),      body: Obx(() {
         if (favoriteController.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         } else if (favoriteController.favorites.isEmpty) {
           return const EmptySavePage();
         } else {
-          return RefreshIndicator(
-            onRefresh: () async {
-              await favoriteController.fetchFavorites();
-            },
-            child: GridView.builder(
-              padding: const EdgeInsets.all(16),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                childAspectRatio: 0.7, // تحسين نسبة العرض إلى الارتفاع
-              ),
-              itemCount: favoriteController.favorites.length,
-              itemBuilder: (context, index) {
-                final favorite = favoriteController.favorites[index];
-                return _buildFavoriteItem(context, favorite);
-              },
-            ),
-          );
+          return _buildFavoriteList(context);
         }
       }),
     );
   }
 
-  Widget _buildFavoriteItem(BuildContext context, favorite) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: InkWell(
-        onTap: () {
-          // يمكنك إضافة إجراء عند النقر على المنتج هنا
+  Widget _buildFavoriteList(BuildContext context) {
+    return RefreshIndicator(
+      onRefresh: () async => await favoriteController.fetchFavorites(),
+      child: ListView.builder(
+        padding: const EdgeInsets.all(8),
+        itemCount: favoriteController.favorites.length,
+        itemBuilder: (context, index) {
+          final favorite = favoriteController.favorites[index];
+          return _buildFavoriteListItem(context, favorite);
         },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(12)),
-              child: AspectRatio(
-                aspectRatio: 1, // يحافظ على نسبة العرض إلى الارتفاع
-                child: Image.network(
-                  favorite.product.image!,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    favorite.product.name!,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.favorite, color: Colors.red),
-                        onPressed: () {
-                          favoriteController.removeFavorite(favorite.id);
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
+Widget _buildFavoriteListItem(BuildContext context, favorite) {
+  return Card(
+    elevation: 2, // تقليل الارتفاع ليكون أكثر نعومة
+    margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(16), // زوايا أكثر استدارة
+    ),
+    color: Colors.white, // تحديد اللون الأبيض للكارت
+    child: Padding(
+      padding: const EdgeInsets.all(16.0), // زيادة الحشو الداخلي
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12), // زوايا مستديرة للصورة
+            child: Image.network(
+              favorite.product.image!,
+              width: 90, // زيادة حجم الصورة قليلاً
+              height: 90,
+              fit: BoxFit.cover,
+            ),
+          ),
+          const SizedBox(width: 20), // زيادة المسافة بين الصورة والنص
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  favorite.product.name!,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600, // وزن خط متوسط
+                    fontSize: 18, // حجم خط أكبر قليلاً
+                    color: Colors.black87, // لون نص أكثر وضوحًا
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  '\$${favorite.product.price}',
+                  style: const TextStyle(
+                    color: Colors.green,
+                    fontWeight: FontWeight.w500, // وزن خط متوسط
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  favorite.product.description ?? 'لا يوجد وصف',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Colors.grey[600], // لون نص وصف أكثر دقة
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.delete_outline, color: Colors.redAccent), // استخدام أيقونة محددة
+            onPressed: () => favoriteController.removeFavorite(favorite.id),
+          ),
+        ],
+      ),
+    ),
+  );
+}
 }
